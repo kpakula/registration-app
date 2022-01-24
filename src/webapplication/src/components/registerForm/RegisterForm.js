@@ -45,7 +45,7 @@ export const RegisterForm = () => {
 
     const handlePassword = (e) => {
         const value = e.target.value;
-        const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{7,}$/;
         const isRegexValid = regex.test(value);
 
         if (value.length < 8) {
@@ -111,7 +111,6 @@ export const RegisterForm = () => {
                 .then((response) => {
                     setOpenSuccess(true);
                     console.log(response);
-                    cleanData();
                 })
                 .catch((error) => {
                     if (!error.response) {
@@ -124,6 +123,20 @@ export const RegisterForm = () => {
                         setUsernameMessageError("Username already taken. Pick another");
                     }
 
+                    if (error.response.status === 400) {
+                        const currentUsername = error.response.data.username;
+                        const currentPassword = error.response.data.password;
+
+                        if (currentUsername) {
+                            setUsernameError(true);
+                            setUsernameMessageError(error.response.data.username);
+                        }
+
+                        if (currentPassword !== undefined) {
+                            setPasswordError(true)
+                            setPasswordErrorMessage(error.response.data.password);
+                        }
+                    }
                     setOpenFailed(true);
                 })
         } else {
@@ -141,10 +154,7 @@ export const RegisterForm = () => {
 
 
     const [openSuccess, setOpenSuccess] = React.useState(false);
-    // const [openSuccessMessage, setOpenSuccessMessage] = React.useState(false);
-
     const [openFailed, setOpenFailed] = React.useState(false);
-    // const [openFailedMessage, setOpenFailedMessage] = React.useState(false);
 
     const handleCloseSuccess = (event, reason) => {
         if (reason === 'clickaway') {
