@@ -1,6 +1,6 @@
 package com.kpakula.registrationapi.services;
 
-import com.kpakula.registrationapi.DTO.UserDTO;
+import com.kpakula.registrationapi.dto.UserDTO;
 import com.kpakula.registrationapi.exceptions.UserExistsException;
 import com.kpakula.registrationapi.models.User;
 import com.kpakula.registrationapi.repositories.UserRepository;
@@ -21,7 +21,7 @@ public class UserService {
         User currentUser = new User(userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
         boolean exists = userRepository.existsUserByUsername(userDTO.getUsername());
 
-        if (!exists) return userRepository.save(currentUser);
-        else throw new UserExistsException(currentUser.getUsername());
+        if (exists) throw new UserExistsException(currentUser.getUsername());
+        return userRepository.save(currentUser);
     }
 }

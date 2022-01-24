@@ -1,7 +1,6 @@
 package com.kpakula.registrationapi.controllers;
 
-import com.kpakula.registrationapi.DTO.UserDTO;
-import com.kpakula.registrationapi.configuration.AppConfig;
+import com.kpakula.registrationapi.dto.UserDTO;
 import com.kpakula.registrationapi.exceptions.UserExistsException;
 import com.kpakula.registrationapi.models.User;
 import com.kpakula.registrationapi.services.UserService;
@@ -21,18 +20,13 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService, AppConfig encoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody UserDTO user) {
+    public ResponseEntity<User> create(@Valid @RequestBody UserDTO user) {
         User createdUser = userService.save(user);
-
-        System.out.println(createdUser.getUsername());
-        System.out.println(createdUser.getPassword());
-        System.out.println(createdUser.getId());
-
         return ResponseEntity.ok(createdUser);
     }
 
@@ -48,7 +42,9 @@ public class UserController {
     }
 
     @ExceptionHandler(UserExistsException.class)
-    public ResponseEntity<?> handleUserExistsException(UserExistsException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<Map<String, String>> handleUserExistsException(UserExistsException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("username", ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
     }
 }
