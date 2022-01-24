@@ -21,6 +21,9 @@ export const RegisterForm = () => {
     const [passwordConfirmError, setPasswordConfirmError] = useState(false);
     const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState("");
 
+    const [openSuccess, setOpenSuccess] = React.useState(false);
+    const [openFailed, setOpenFailed] = React.useState(false);
+
     const [isPasswordShowed, setIsPasswordShowed] = useState(false);
     const paperStyle = { padding: '20px 20px', width: 300, margin: "20px auto" }
 
@@ -39,7 +42,6 @@ export const RegisterForm = () => {
             setUsernameError(false)
             setUsernameMessageError("")
         }
-
         setUserRegistration({ ...userRegistration, username: value });
     }
 
@@ -82,7 +84,7 @@ export const RegisterForm = () => {
         setUserRegistration({ ...userRegistration, confirmPassword: value });
     }
 
-    const handleSubmit = (e) => {
+    const handleSignUp = (e) => {
         e.preventDefault();
 
         if (userRegistration.username.length === 0) {
@@ -100,21 +102,16 @@ export const RegisterForm = () => {
             setPasswordConfirmErrorMessage("Confirmed password cannot be empty")
         }
 
-        if (!usernameError && !passwordError && !passwordConfirmError &&
-            userRegistration.username.length !== 0 && userRegistration.password.length !== 0 && userRegistration.confirmPassword.length !== 0
-        ) {
-            console.log(userRegistration)
+        if (!usernameError && !passwordError && !passwordConfirmError && userRegistration.username.length !== 0 && userRegistration.password.length !== 0 && userRegistration.confirmPassword.length !== 0) {
             axios.post(URL + '/api/user', {
                 username: userRegistration.username,
                 password: userRegistration.password
             })
                 .then((response) => {
                     setOpenSuccess(true);
-                    console.log(response);
                 })
                 .catch((error) => {
                     if (!error.response) {
-                        console.log("Network connection error")
                         setOpenFailed(true);
                     }
 
@@ -144,9 +141,6 @@ export const RegisterForm = () => {
         }
     }
 
-    const [openSuccess, setOpenSuccess] = React.useState(false);
-    const [openFailed, setOpenFailed] = React.useState(false);
-
     const handleCloseSuccess = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -167,7 +161,7 @@ export const RegisterForm = () => {
                 <Paper elevation={5} style={paperStyle} >
                     <h2>Create your account</h2>
 
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSignUp}>
                         <Box mb={2}>
                             <TextField variant="outlined" label="Username" autoComplete='off' onChange={handleUsername} error={usernameError} helperText={usernameErrorMessage} fullWidth />
                         </Box>
@@ -185,7 +179,7 @@ export const RegisterForm = () => {
                         </Box>
 
                         <Box mb={2}>
-                        <FormControlLabel control={<Checkbox checked={isPasswordShowed} onChange={() => { setIsPasswordShowed(prevCheck => !prevCheck) }} />} label="Show password" />
+                            <FormControlLabel control={<Checkbox checked={isPasswordShowed} onChange={() => { setIsPasswordShowed(prevCheck => !prevCheck) }} />} label="Show password" />
                         </Box>
 
                         <Button type='submit' variant='contained' color='primary' fullWidth> Sign up </Button>
@@ -193,21 +187,18 @@ export const RegisterForm = () => {
                 </Paper>
             </Grid>
 
-            <Snackbar open={openSuccess} autoHideDuration={5000} onClose={handleCloseSuccess} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+            <Snackbar open={openSuccess} autoHideDuration={5000} onClose={handleCloseSuccess} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
                 <Alert onClose={handleCloseSuccess} severity="success" variant="filled">
                     Account has been created
                 </Alert>
             </Snackbar>
 
-            <Snackbar open={openFailed} autoHideDuration={5000} onClose={handleCloseFailed} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+            <Snackbar open={openFailed} autoHideDuration={5000} onClose={handleCloseFailed} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
                 <Alert onClose={handleCloseFailed} severity="error" variant="filled">
                     Account has not been created.
                 </Alert>
             </Snackbar>
-
         </Container>
-
-
     );
 };
 
