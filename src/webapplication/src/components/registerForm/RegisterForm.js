@@ -144,15 +144,6 @@ export const RegisterForm = () => {
         }
     }
 
-
-
-    const cleanData = () => {
-        setUserRegistration({ ...userRegistration, confirmPassword: "" });
-        setUserRegistration({ ...userRegistration, password: "" });
-        setUserRegistration({ ...userRegistration, username: "" });
-    }
-
-
     const [openSuccess, setOpenSuccess] = React.useState(false);
     const [openFailed, setOpenFailed] = React.useState(false);
 
@@ -193,7 +184,9 @@ export const RegisterForm = () => {
                             />
                         </Box>
 
+                        <Box mb={2}>
                         <FormControlLabel control={<Checkbox checked={isPasswordShowed} onChange={() => { setIsPasswordShowed(prevCheck => !prevCheck) }} />} label="Show password" />
+                        </Box>
 
                         <Button type='submit' variant='contained' color='primary' fullWidth> Sign up </Button>
                     </form>
