@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -48,6 +49,6 @@ public class UserController {
 
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<?> handleUserExistsException(UserExistsException ex) {
-        return new ResponseEntity<>(ex, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

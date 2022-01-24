@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class UserDTO {
     @NotNull
     @Size(min = 5, max = 60)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "The username should contains only letters and numbers")
     private String username;
 
     @NotNull
