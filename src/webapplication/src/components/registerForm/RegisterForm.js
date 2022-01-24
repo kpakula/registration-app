@@ -63,8 +63,10 @@ export const RegisterForm = () => {
 
         if (userRegistration.confirmPassword.length > 0 && value !== userRegistration.confirmPassword) {
             setPasswordConfirmError(true);
+            setPasswordConfirmErrorMessage("Those passwords didn't match");
         } else {
             setPasswordConfirmError(false);
+            setPasswordConfirmErrorMessage("");
         }
 
         setUserRegistration({ ...userRegistration, password: value });
