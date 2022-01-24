@@ -110,6 +110,7 @@ export const RegisterForm = () => {
                 password: userRegistration.password
             })
                 .then((response) => {
+                    setOpenFailed(false);
                     setOpenSuccess(true);
                 })
                 .catch((error) => {
