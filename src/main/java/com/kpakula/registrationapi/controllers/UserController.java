@@ -1,6 +1,7 @@
 package com.kpakula.registrationapi.controllers;
 
 import com.kpakula.registrationapi.DTO.UserDTO;
+import com.kpakula.registrationapi.configuration.AppConfig;
 import com.kpakula.registrationapi.exceptions.UserExistsException;
 import com.kpakula.registrationapi.models.User;
 import com.kpakula.registrationapi.services.UserService;
@@ -18,10 +19,9 @@ import java.util.Map;
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")
 public class UserController {
-
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AppConfig encoder) {
         this.userService = userService;
     }
 
