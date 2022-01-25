@@ -86,6 +86,10 @@ export const RegisterForm = () => {
         setUserRegistration({ ...userRegistration, confirmPassword: value });
     }
 
+    const checkIfDataIsCorrect = () => {
+        return !usernameError && !passwordError && !passwordConfirmError && userRegistration.username.length !== 0 && userRegistration.password.length !== 0 && userRegistration.confirmPassword.length !== 0;
+    }
+
     const handleSignUp = (e) => {
         e.preventDefault();
 
@@ -104,7 +108,7 @@ export const RegisterForm = () => {
             setPasswordConfirmErrorMessage("Confirmed password cannot be empty")
         }
 
-        if (!usernameError && !passwordError && !passwordConfirmError && userRegistration.username.length !== 0 && userRegistration.password.length !== 0 && userRegistration.confirmPassword.length !== 0) {
+        if (checkIfDataIsCorrect()) {
             axios.post(URL + '/api/user', {
                 username: userRegistration.username,
                 password: userRegistration.password
