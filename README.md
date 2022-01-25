@@ -13,7 +13,7 @@
 mvn spring-boot:run
 ```
 
-2. App should be available under:
+2. Application should be available under:
 ```bash
 localhost:8080
 ```
@@ -25,7 +25,7 @@ cd src/webapplication/
 npm install
 npm start
 ```
-2. App should be available under:
+2. Application should be available under:
 ```bash
 localhost:3000
 ```
