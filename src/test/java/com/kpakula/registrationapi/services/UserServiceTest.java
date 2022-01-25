@@ -6,11 +6,11 @@ import com.kpakula.registrationapi.models.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -41,6 +41,7 @@ public class UserServiceTest {
             userService.save(userDTO2);
         });
 
+        // then
         Assertions.assertTrue(exception.getMessage().contains("exists in database"));
     }
 
@@ -58,5 +59,4 @@ public class UserServiceTest {
         Assertions.assertEquals(1, user1.getId());
         Assertions.assertEquals(2, user2.getId());
     }
-
 }
